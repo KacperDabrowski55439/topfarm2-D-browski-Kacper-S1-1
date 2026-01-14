@@ -1,0 +1,28 @@
+from topfarm import TopFarmProblem
+from topfarm.easy_drivers import EasyScipyOptimizeDriver
+from topfarm.cost_models.py_wake_wrapper import PyWakeAEPCostModelComponent
+
+from py_wake.examples.data.iea37._iea37 import IEA37_WindTurbines, IEA37Site
+from py_wake.deficit_models.noj import NOJ
+
+site = IEA37Site(16)
+wt = IEA37_WindTurbines()
+wfm = NOJ(site, wt)
+
+x_init = [0, 500]
+y_init = [0, 0]
+
+cost_comp = PyWakeAEPCostModelComponent(
+    windFarmModel=wfm,
+    n_wt=2,
+    grad_method='autograd'
+)
+
+tf = TopFarmProblem(
+    design_vars={'x': x_init, 'y': y_init},
+    cost_comp=cost_comp,
+    driver=EasyScipyOptimizeDriver()
+)
+
+cost, state = tf.evaluate()
+print("AEP:", -cost)
