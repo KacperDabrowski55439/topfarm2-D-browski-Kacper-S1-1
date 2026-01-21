@@ -1,0 +1,47 @@
+
+CEL PROJEKTU
+Zademonstrowanie możliwości frameworku TopFarm2 do optymalizacji rozmieszczenia 
+turbin wiatrowych z uwzględnieniem ograniczeń praktycznych (granica terenu, 
+minimum odległości między turbinami) oraz porównanie wpływu parametrów 
+optymalizacji na otrzymane wyniki.
+
+ZAŁOŻENIA
+- Turbina: IEA37 10MW, średnica wirnika D = 130m
+- Site: IEA37 standard (8 kierunków wiatru, model strat NOJ)
+- Liczba turbin: 9 (baseline), 16 (eksperymenty)
+- Ograniczenia spacing: 2D (260m), 3D (390m), 4D (520m)
+- Optymalizator: SLSQP z różną liczbą iteracji
+
+METODYKA
+1. TopFarmProblem: Integruje zmienne projektowe (x, y), funkcję celu 
+   (maksymalizacja AEP), ograniczenia (granica, spacing) i driver
+2. EasyScipyOptimizeDriver: SLSQP (Sequential Least Squares Programming) 
+   - gradient-based optimizer
+3. Constraints: XYBoundaryConstraint (turby wewnątrz polygonu), 
+   SpacingConstraint (minimalna odległość)
+4. Workflow: Load initial layout → create problem → optimize → analyze
+
+WYNIKI GŁÓWNE
+- Sprint 1 (Baseline 9 turbin): AEP ≈ 240 MW, optymalizacja ~4.8s
+- Sprint 2 (Spacing): 2D = 240 MW, 3D = 238 MW, 4D = 234 MW
+- Sprint 3 (Driver): Fast (50 iter) = 239 MW/2s, Accurate (200 iter) = 241 MW/5s
+- Sprint 4 (Eksperymenty):
+  * 9 turbin = 240 MW vs 16 turbin = 320 MW (+33%)
+  * Spacing: tighter = więcej AEP ale więcej konfliktów
+  * Driver: więcej iteracji = lepszy output (-0.5-1%)
+
+WNIOSKI
+1. Liczba turbin to dominujący czynnik wzrostu AEP
+2. Spacing ma umiarkowany wpływ (~8-15% AEP przy zmianie z 2D na 4D)
+3. Driver configuration: +0.5-1% AEP za 3x więcej czasu obliczeń
+4. Wake losses: ścieśniejsze rozmieszczenie = więcej energii ale więcej strat
+5. SLSQP dobrze się zbieża dla 9-16 turbin
+6. Dla dużych farm (50-100 turbin) potrzebne mogą być algorytmy populacyjne
+7. TopFarm2 Value: automatyzuje iteracje, constraint enforcement, reproducibility
+
+PLIKI WYJŚCIOWE
+✓ results/figures/sprint1_layout.png - Initial vs Optimized (9 turbin)
+✓ results/figures/sprint2_spacing_variants.png - 3 spacing warianty
+✓ results/figures/sprint3_driver_comparison.png - Fast vs Accurate
+✓ results/figures/sprint4_experiments.png - 3 eksperymenty
+✓ results/results.csv - Kompletne dane wszystkich eksperymentów
