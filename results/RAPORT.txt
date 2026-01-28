@@ -23,18 +23,21 @@ METODYKA
 
 WYNIKI GŁÓWNE
 - Sprint 1 (Baseline 9 turbin): AEP ≈ 239.7 MW, optymalizacja ~7.8s
-- Sprint 2 (Spacing): 2D = 232.5 MW, 3D = 228.3 MW, 4D = 222.1 MW (precomputed)
+- Sprint 2 (Spacing): 2D (12T) = 266.0 MW, 3D (9T) = 232.5 MW, 4D (7T) = 198.2 MW (precomputed)
 - Sprint 3 (Driver): Fast (50 iter) = 233.8 MW/3.5s, Accurate (200 iter) = 239.7 MW/8.3s
 - Sprint 4 (Eksperymenty):
   * 9 turbin = 239.7 MW vs 16 turbin = 405.6 MW (+69%)
-  * Spacing: tighter = więcej AEP ale więcej konfliktów (2D-4D: -4.2% do -9.4%)
+  * Spacing: 2D fits 71% więcej turbin niż 4D (266 vs 198 MW total)
   * Driver: więcej iteracji = lepszy output (+2.5% przy 2.4x czasu)
 
 WNIOSKI
 1. Liczba turbin to dominujący czynnik wzrostu AEP (+69% przy 16 vs 9 turbin)
-2. Spacing ma istotny wpływ (~4.4% AEP przy zmianie z 2D na 4D)
+2. Spacing constraint wpływa na ILÓ turbin, które mogą się zmieścić (12T→7T przy 2D→4D, -25.6% AEP)
+   - Im większy spacing, tym mniej turbin, ale każda ma lepszą efektywność
+   - Najciasniejszy spacing (2D): 12 turbin × 22.2 MW avg = 266 MW (więcej wake losses)
+   - Najluźniejszy spacing (4D): 7 turbin × 28.3 MW avg = 198 MW (lepszy per-turbine)
 3. Driver configuration: +2.5% AEP za 2.4x więcej czasu obliczeń (3.5s → 8.3s)
-4. Wake losses: ścieśniejsze rozmieszczenie = mniej energii ze względu na wpływ sąsiednich turbin
+4. Wake losses: ścieśniejsze rozmieszczenie = więcej turbin ale mniejsze AEP per turbina
 5. SLSQP dobrze się zbieża dla 9-16 turbin (gradient-based optimizer efektywny)
 6. Dla dużych farm (50-100 turbin) potrzebne mogą być algorytmy populacyjne (bardziej globalne)
 7. TopFarm2 Value: automatyzuje iteracje, constraint enforcement, reproducibility

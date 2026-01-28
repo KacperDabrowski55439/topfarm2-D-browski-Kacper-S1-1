@@ -1,8 +1,8 @@
 experiment,parameter,aep_mw,time_s
-Turbine Count,9 turbines,239.68180708200114,5.045953273773193
-Turbine Count,16 turbines,405.5629705812545,9.13530683517456
-Spacing Constraint,2D (260m),232.5,10.0
-Spacing Constraint,3D (390m),228.3,10.0
-Spacing Constraint,4D (520m),222.1,10.0
+Turbine Count,9 turbines,239.68180708200114,4.650834798812866
+Turbine Count,16 turbines,405.5629705812545,8.636486053466797
+Spacing Constraint,"2D (260m, 12T)",266.0,10.0
+Spacing Constraint,"3D (390m, 9T)",232.5,10.0
+Spacing Constraint,"4D (520m, 7T)",198.2,10.0
 Driver Config,Fast,233.8348708510261,2.826892852783203
 Driver Config,Accurate,239.69453785024982,8.330826997756958
