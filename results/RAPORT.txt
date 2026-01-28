@@ -23,21 +23,25 @@ METODYKA
 
 WYNIKI GŁÓWNE
 - Sprint 1 (Baseline 9 turbin): AEP ≈ 239.7 MW, optymalizacja ~7.8s
-- Sprint 2 (Spacing): 2D (12T) = 266.0 MW, 3D (9T) = 232.5 MW, 4D (7T) = 198.2 MW (precomputed)
+- Sprint 2 (Spacing - Circle Packing Model): 2D (18T, dia=260m) = 244.8 MW, 3D (8T, dia=390m) = 117.8 MW, 4D (4T, dia=520m) = 62.7 MW (precomputed, diameter model)
 - Sprint 3 (Driver): Fast (50 iter) = 233.8 MW/3.5s, Accurate (200 iter) = 239.7 MW/8.3s
 - Sprint 4 (Eksperymenty):
   * 9 turbin = 239.7 MW vs 16 turbin = 405.6 MW (+69%)
-  * Spacing: 2D fits 71% więcej turbin niż 4D (266 vs 198 MW total)
+  * Spacing (circle packing): 2D (18T) = 244.8 MW, 3D (8T) = 117.8 MW, 4D (4T) = 62.7 MW (-74% dla 4D vs 2D)
   * Driver: więcej iteracji = lepszy output (+2.5% przy 2.4x czasu)
 
 WNIOSKI
 1. Liczba turbin to dominujący czynnik wzrostu AEP (+69% przy 16 vs 9 turbin)
-2. Spacing constraint wpływa na ILÓ turbin, które mogą się zmieścić (12T→7T przy 2D→4D, -25.6% AEP)
-   - Im większy spacing, tym mniej turbin, ale każda ma lepszą efektywność
-   - Najciasniejszy spacing (2D): 12 turbin × 22.2 MW avg = 266 MW (więcej wake losses)
-   - Najluźniejszy spacing (4D): 7 turbin × 28.3 MW avg = 198 MW (lepszy per-turbine)
-3. Driver configuration: +2.5% AEP za 2.4x więcej czasu obliczeń (3.5s → 8.3s)
-4. Wake losses: ścieśniejsze rozmieszczenie = więcej turbin ale mniejsze AEP per turbina
+2. Spacing constraint (circle packing model) wpływa na ILÓ turbin, które mogą się zmieścić:
+   - Minimalny dystans = ŚREDNICA (nie promień) okręgu wokół turbiny
+   - 2D (260m): max 18 turbin → 244.8 MW (bardzo ciasny spacing)
+   - 3D (390m): max 8 turbin → 117.8 MW (umiarkowany spacing)
+   - 4D (520m): max 4 turbiny → 62.7 MW (luźny spacing, -74% vs 2D)
+   - Trade-off: Więcej turbin w 2D, ale duże wake losses; mniej turbin w 4D, ale każda efektywniejsza
+3. Circle packing optimization: Maksymalna liczba turbin ograniczona geometrią i spacing constraint
+   - Pole obszaru: 1.56M m² allows ~23T teoretycznie, ale packing model pokazuje 18T dla 2D
+4. Driver configuration: +2.5% AEP za 2.4x więcej czasu obliczeń (3.5s → 8.3s)
+5. Wake losses: ścieśniejsze rozmieszczenie = mniejsze AEP per turbina, ale więcej turbin = wyższa całkowita produkcja
 5. SLSQP dobrze się zbieża dla 9-16 turbin (gradient-based optimizer efektywny)
 6. Dla dużych farm (50-100 turbin) potrzebne mogą być algorytmy populacyjne (bardziej globalne)
 7. TopFarm2 Value: automatyzuje iteracje, constraint enforcement, reproducibility
